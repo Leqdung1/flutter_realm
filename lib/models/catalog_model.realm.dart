@@ -1,7 +1,7 @@
 // dart format width=80
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'catalog.dart';
+part of 'catalog_model.dart';
 
 // **************************************************************************
 // RealmObjectGenerator
@@ -10,15 +10,9 @@ part of 'catalog.dart';
 // coverage:ignore-file
 // ignore_for_file: type=lint
 class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
-  static var _defaultsSet = false;
-
-  Item(int id, String name, {int price = 0}) {
-    if (!_defaultsSet) {
-      _defaultsSet = RealmObjectBase.setDefaults<Item>({'price': 0});
-    }
+  Item(int id, String name) {
     RealmObjectBase.set(this, 'id', id);
     RealmObjectBase.set(this, 'name', name);
-    RealmObjectBase.set(this, 'price', price);
   }
 
   Item._();
@@ -34,11 +28,6 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
   set name(String value) => RealmObjectBase.set(this, 'name', value);
 
   @override
-  int get price => RealmObjectBase.get<int>(this, 'price') as int;
-  @override
-  set price(int value) => RealmObjectBase.set(this, 'price', value);
-
-  @override
   Stream<RealmObjectChanges<Item>> get changes =>
       RealmObjectBase.getChanges<Item>(this);
 
@@ -50,11 +39,7 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
   Item freeze() => RealmObjectBase.freezeObject<Item>(this);
 
   EJsonValue toEJson() {
-    return <String, dynamic>{
-      'id': id.toEJson(),
-      'name': name.toEJson(),
-      'price': price.toEJson(),
-    };
+    return <String, dynamic>{'id': id.toEJson(), 'name': name.toEJson()};
   }
 
   static EJsonValue _toEJson(Item value) => value.toEJson();
@@ -64,7 +49,6 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
       {'id': EJsonValue id, 'name': EJsonValue name} => Item(
         fromEJson(id),
         fromEJson(name),
-        price: fromEJson(ejson['price'], defaultValue: 0),
       ),
       _ => raiseInvalidEJson(ejson),
     };
@@ -76,8 +60,50 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     return const SchemaObject(ObjectType.realmObject, Item, 'Item', [
       SchemaProperty('id', RealmPropertyType.int, primaryKey: true),
       SchemaProperty('name', RealmPropertyType.string),
-      SchemaProperty('price', RealmPropertyType.int),
     ]);
+  }();
+
+  @override
+  SchemaObject get objectSchema => RealmObjectBase.getSchema(this) ?? schema;
+}
+
+class CatalogModel extends _CatalogModel
+    with RealmEntity, RealmObjectBase, RealmObject {
+  CatalogModel() {}
+
+  CatalogModel._();
+
+  @override
+  Stream<RealmObjectChanges<CatalogModel>> get changes =>
+      RealmObjectBase.getChanges<CatalogModel>(this);
+
+  @override
+  Stream<RealmObjectChanges<CatalogModel>> changesFor([
+    List<String>? keyPaths,
+  ]) => RealmObjectBase.getChangesFor<CatalogModel>(this, keyPaths);
+
+  @override
+  CatalogModel freeze() => RealmObjectBase.freezeObject<CatalogModel>(this);
+
+  EJsonValue toEJson() {
+    return <String, dynamic>{};
+  }
+
+  static EJsonValue _toEJson(CatalogModel value) => value.toEJson();
+  static CatalogModel _fromEJson(EJsonValue ejson) {
+    if (ejson is! Map<String, dynamic>) return raiseInvalidEJson(ejson);
+    return CatalogModel();
+  }
+
+  static final schema = () {
+    RealmObjectBase.registerFactory(CatalogModel._);
+    register(_toEJson, _fromEJson);
+    return const SchemaObject(
+      ObjectType.realmObject,
+      CatalogModel,
+      'CatalogModel',
+      [],
+    );
   }();
 
   @override

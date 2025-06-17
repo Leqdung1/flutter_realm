@@ -1,16 +1,6 @@
-// Copyright 2019 The Flutter team. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 import 'package:flutter/material.dart';
-import 'package:flutter_realm/sample/cart_screen.dart';
-import 'package:flutter_realm/sample/catalog_screen.dart';
-import 'package:flutter_realm/sample/login_screen.dart';
-import 'package:flutter_realm/sample/model/cart.dart';
-import 'package:flutter_realm/sample/model/catalog.dart';
-import 'package:flutter_realm/sample/theme.dart';
-import 'package:provider/provider.dart';
-
+import 'package:flutter_realm/screens/cart_screen.dart';
+import 'package:flutter_realm/screens/catalog_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,34 +11,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Using MultiProvider is convenient when providing multiple objects.
-    return MultiProvider(
-      providers: [
-        // In this sample app, CatalogModel never changes, so a simple Provider
-        // is sufficient.
-        Provider(create: (context) => CatalogModel()),
-        // CartModel is implemented as a ChangeNotifier, which calls for the use
-        // of ChangeNotifierProvider. Moreover, CartModel depends
-        // on CatalogModel, so a ProxyProvider is needed.
-        ChangeNotifierProxyProvider<CatalogModel, CartModel>(
-          create: (context) => CartModel(),
-          update: (context, catalog, cart) {
-            if (cart == null) throw ArgumentError.notNull('cart');
-            cart.catalog = catalog;
-            return cart;
-          },
-        ),
-      ],
-      child: MaterialApp(
-        title: 'Provider Demo',
-        theme: appTheme,
-        initialRoute: '/',
-        routes: {
-          '/': (context) => const MyLogin(),
-          '/catalog': (context) => const MyCatalog(),
-          '/cart': (context) => const MyCart(),
-        },
-      ),
+
+    return MaterialApp(
+      title: 'Provider Demo',
+      initialRoute: '/catalog',
+      routes: {
+        '/catalog': (context) => const CatalogScreen(),
+        '/cart': (context) => const CartScreen(),
+      },
     );
   }
 }

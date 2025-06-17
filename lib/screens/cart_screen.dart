@@ -99,33 +99,10 @@ class _CartScreenState extends State<CartScreen> {
             child: Row(
               children: [
                 Text(
-                  '${cart.items.fold<int>(0, (sum, item) => sum + item.id)} items in cart',
+                  '${cart.items.length} items in cart',
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 15,
-                  ),
-                ),
-                const Spacer(),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '${cart.items.length}',
-                        style: const TextStyle(
-                          color: Color(0xFF2563FF),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' unique concepts',
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
-                      ),
-                    ],
                   ),
                 ),
               ],
@@ -147,14 +124,17 @@ class _CartScreenState extends State<CartScreen> {
                   padding: const EdgeInsets.all(16),
                   child: Row(
                     children: [
-                      // CircleAvatar(backgroundColor: Color(item.color), radius: 18),
+                      CircleAvatar(
+                        backgroundColor: Color(item.color),
+                        radius: 18,
+                      ),
                       const SizedBox(width: 16),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              item.toString(),
+                              item.name,
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
@@ -229,7 +209,7 @@ class _CartScreenState extends State<CartScreen> {
                       ),
                     ),
                     child: Text(
-                      'Checkout (${cart.items.fold<int>(0, (sum, item) => sum + item.id)})',
+                      'Checkout (${cart.items.length})',
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,

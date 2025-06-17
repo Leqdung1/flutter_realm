@@ -6,20 +6,33 @@ part 'catalog_model.realm.dart';
 class _Item {
   @PrimaryKey()
   late int id;
-
   late String name;
+  late int color;
 }
 
-@RealmModel()
-class _CatalogModel {
+class CatalogModel {
+  static final CatalogModel _instance = CatalogModel._internal();
   late Realm realm;
 
-  _CatalogModel() {
-    var config = Configuration.local([Item.schema]);
+  factory CatalogModel() {
+    return _instance;
+  }
+
+  CatalogModel._internal() {
+    var config = Configuration.local([
+      Item.schema,
+    ], shouldDeleteIfMigrationNeeded: true);
     realm = Realm(config);
 
     var allItems = realm.all<Item>();
-
-    if (allItems.isEmpty) {}
+    if (allItems.isEmpty) {
+      realm.write(() {
+        realm.add(Item(1, 'Code Smell', 0xFFF44336));
+        realm.add(Item(2, 'Control Flow', 0xFF2196F3));
+        realm.add(Item(3, 'Interpreter', 0xFF9C27B0));
+        realm.add(Item(4, 'Recursion', 0xFF673AB7));
+        realm.add(Item(5, 'Sprint', 0xFF4CAF50));
+      });
+    }
   }
 }

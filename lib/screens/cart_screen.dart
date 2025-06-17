@@ -80,7 +80,7 @@ class _CartScreenState extends State<CartScreen> {
               const Text(
                 "Looks like you haven't added any\nprogramming concepts to your cart yet.",
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.black54, fontSize: 15),
+                style: TextStyle(color: Colors.black, fontSize: 15),
               ),
               const SizedBox(height: 32),
               ElevatedButton(
@@ -90,7 +90,7 @@ class _CartScreenState extends State<CartScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF2563FF),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(16),
                   ),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 32,
@@ -99,7 +99,11 @@ class _CartScreenState extends State<CartScreen> {
                 ),
                 child: const Text(
                   'Continue Shopping',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ],

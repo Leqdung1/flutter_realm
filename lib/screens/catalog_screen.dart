@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_realm/models/catalog_model.dart';
 import 'package:flutter_realm/screens/cart_screen.dart';
 
 class CatalogScreen extends StatefulWidget {
@@ -9,46 +10,13 @@ class CatalogScreen extends StatefulWidget {
 }
 
 class _CatalogScreenState extends State<CatalogScreen> {
-  final List<Map<String, dynamic>> items = [
-    {
-      'color': Colors.red,
-      'title': 'Code Smell',
-      'subtitle': 'Programming concept',
-      'available': false,
-    },
-    {
-      'color': Colors.blue,
-      'title': 'Control-Flow',
-      'subtitle': 'Programming concept',
-      'available': true,
-    },
-    {
-      'color': Colors.purple,
-      'title': 'Interpreter',
-      'subtitle': 'Programming concept',
-      'available': false,
-    },
-    {
-      'color': Colors.green,
-      'title': 'Recursion',
-      'subtitle': 'Programming concept',
-      'available': false,
-    },
-    {
-      'color': Colors.orange,
-      'title': 'Sprint',
-      'subtitle': 'Programming concept',
-      'available': false,
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final items = CatalogModel().realm.all<Item>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-
         title: const Text(
           'Catalog',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
@@ -104,20 +72,51 @@ class _CatalogScreenState extends State<CatalogScreen> {
         children: [
           // Item count row
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
             child: Row(
-              children: const [
-                Text(
-                  '13 items available',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              children: [
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: '13',
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' items available',
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                Spacer(),      
-                Text(
-                  '3 in stock',
-                  style: TextStyle(
-                    color: Colors.green,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
+
+                Spacer(),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: '3',
+                        style: TextStyle(
+                          color: Colors.green,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' in stock',
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -147,14 +146,17 @@ class _CatalogScreenState extends State<CatalogScreen> {
                   padding: const EdgeInsets.all(16),
                   child: Row(
                     children: [
-                      CircleAvatar(backgroundColor: item['color'], radius: 18),
+                      CircleAvatar(
+                        backgroundColor: Color(item.color),
+                        radius: 18,
+                      ),
                       const SizedBox(width: 16),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              item['title'],
+                              item.name,
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
@@ -162,34 +164,12 @@ class _CatalogScreenState extends State<CatalogScreen> {
                             ),
                             const SizedBox(height: 2),
                             Text(
-                              item['subtitle'],
+                              'Subtitle',
                               style: const TextStyle(
                                 color: Colors.grey,
                                 fontSize: 13,
                               ),
                             ),
-                            if (item['available'])
-                              Padding(
-                                padding: const EdgeInsets.only(top: 4.0),
-                                child: Row(
-                                  children: const [
-                                    Icon(
-                                      Icons.circle,
-                                      color: Colors.green,
-                                      size: 10,
-                                    ),
-                                    SizedBox(width: 4),
-                                    Text(
-                                      'Available',
-                                      style: TextStyle(
-                                        color: Colors.green,
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
                           ],
                         ),
                       ),

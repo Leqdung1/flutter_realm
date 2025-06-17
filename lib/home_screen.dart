@@ -20,15 +20,14 @@ class _HomeScreenState extends State<HomeScreen> {
     realm = Realm(config);
   }
 
-  int get carsCount => realm.all<Car>().length;
-
   @override
   void initState() {
     super.initState();
     var myCar = Car("Tesla", model: "Model Y", kilometer: 1);
     realm.write(() {
-      var newCar = realm.add(Car('Dung', owner: Person('Dung')));
+      var newCar = realm.add(Car('', owner: Person('Dung')));
 
+      newCar.make = 'Tesla';
       newCar.model = 'Lq';
       newCar.kilometer = 10000;
 
@@ -40,9 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Realm')),
-      body: Center(
-        child: Text('cars.owner: ${realm.all<Car>().first.owner?.name}'),
-      ),
+      body: Center(child: Text('cars.make: ${realm.all<Car>().first.make}')),
     );
   }
 }

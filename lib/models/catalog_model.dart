@@ -11,14 +11,9 @@ class _Item {
 }
 
 class CatalogModel {
-  static final CatalogModel _instance = CatalogModel._internal();
   late Realm realm;
 
-  factory CatalogModel() {
-    return _instance;
-  }
-
-  CatalogModel._internal() {
+  CatalogModel() {
     var config = Configuration.local([
       Item.schema,
     ], shouldDeleteIfMigrationNeeded: true);

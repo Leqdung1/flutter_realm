@@ -12,7 +12,9 @@ class CatalogScreen extends StatefulWidget {
 class _CatalogScreenState extends State<CatalogScreen> {
   @override
   Widget build(BuildContext context) {
-    final items = CatalogModel().realm.all<Item>();
+    final itemsData = CatalogModel().realm.all<Item>();
+    final listExpand =
+        List.generate(20, (_) => itemsData).expand((x) => x).toList();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -69,57 +71,28 @@ class _CatalogScreenState extends State<CatalogScreen> {
         ],
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Item count row
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
-            child: Row(
-              children: [
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '13',
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' items available',
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                        ),
-                      ),
-                    ],
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: listExpand.length.toString(),
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
                   ),
-                ),
-
-                Spacer(),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '3',
-                        style: TextStyle(
-                          color: Colors.green,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' in stock',
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                        ),
-                      ),
-                    ],
+                  TextSpan(
+                    text: ' items',
+                    style: const TextStyle(color: Colors.black, fontSize: 15),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 8),
@@ -127,10 +100,10 @@ class _CatalogScreenState extends State<CatalogScreen> {
           Expanded(
             child: ListView.separated(
               padding: const EdgeInsets.symmetric(horizontal: 12),
-              itemCount: items.length,
+              itemCount: listExpand.length,
               separatorBuilder: (_, __) => const SizedBox(height: 12),
               itemBuilder: (context, index) {
-                final item = items[index];
+                final item = listExpand[index];
                 return Container(
                   decoration: BoxDecoration(
                     color: Colors.white,

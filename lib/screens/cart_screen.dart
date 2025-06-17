@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_realm/models/cart_models.dart';
+import 'package:provider/provider.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -8,57 +10,11 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  // Example cart items. Set to empty list to show the empty cart UI.
-  List<Map<String, dynamic>> cartItems = [
-    {
-      'color': Colors.red,
-      'title': 'Code Smell',
-      'subtitle': 'Programming concept',
-      'quantity': 1,
-    },
-    {
-      'color': Colors.blue,
-      'title': 'Control-Flow',
-      'subtitle': 'Programming concept',
-      'quantity': 1,
-    },
-    {
-      'color': Colors.purple,
-      'title': 'Interpreter',
-      'subtitle': 'Programming concept',
-      'quantity': 1,
-    },
-  ];
-
-  void _increment(int index) {
-    setState(() {
-      cartItems[index]['quantity']++;
-    });
-  }
-
-  void _decrement(int index) {
-    setState(() {
-      if (cartItems[index]['quantity'] > 1) {
-        cartItems[index]['quantity']--;
-      }
-    });
-  }
-
-  void _remove(int index) {
-    setState(() {
-      cartItems.removeAt(index);
-    });
-  }
-
-  void _clearCart() {
-    setState(() {
-      cartItems.clear();
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    if (cartItems.isEmpty) {
+    final cart = Provider.of<CartModel>(context);
+
+    if (cart.items.isEmpty) {
       // Empty cart UI
       return Scaffold(
         backgroundColor: const Color(0xFFF7F8FA),
@@ -129,7 +85,9 @@ class _CartScreenState extends State<CartScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.delete, color: Colors.red),
-            onPressed: _clearCart,
+            onPressed: () {
+              cart.clearAll();
+            },
           ),
         ],
       ),
@@ -141,7 +99,7 @@ class _CartScreenState extends State<CartScreen> {
             child: Row(
               children: [
                 Text(
-                  '${cartItems.fold<int>(0, (sum, item) => sum + item['quantity'] as int)} items in cart',
+                  '${cart.items.fold<int>(0, (sum, item) => sum + item.id)} items in cart',
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 15,
@@ -152,7 +110,7 @@ class _CartScreenState extends State<CartScreen> {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: '${cartItems.length}',
+                        text: '${cart.items.length}',
                         style: const TextStyle(
                           color: Color(0xFF2563FF),
                           fontWeight: FontWeight.bold,
@@ -177,10 +135,10 @@ class _CartScreenState extends State<CartScreen> {
           Expanded(
             child: ListView.separated(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              itemCount: cartItems.length,
+              itemCount: cart.items.length,
               separatorBuilder: (_, __) => const SizedBox(height: 12),
               itemBuilder: (context, index) {
-                final item = cartItems[index];
+                final item = cart.items[index];
                 return Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -189,14 +147,14 @@ class _CartScreenState extends State<CartScreen> {
                   padding: const EdgeInsets.all(16),
                   child: Row(
                     children: [
-                      CircleAvatar(backgroundColor: item['color'], radius: 18),
+                      // CircleAvatar(backgroundColor: Color(item.color), radius: 18),
                       const SizedBox(width: 16),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              item['title'],
+                              item.toString(),
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
@@ -204,7 +162,7 @@ class _CartScreenState extends State<CartScreen> {
                             ),
                             const SizedBox(height: 2),
                             Text(
-                              item['subtitle'],
+                              'Subtitle',
                               style: const TextStyle(
                                 color: Colors.grey,
                                 fontSize: 13,
@@ -213,31 +171,13 @@ class _CartScreenState extends State<CartScreen> {
                           ],
                         ),
                       ),
-                      Row(
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.remove, size: 20),
-                            onPressed: () => _decrement(index),
-                          ),
-                          Text(
-                            '${item['quantity']}',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.add, size: 20),
-                            onPressed: () => _increment(index),
-                          ),
-                        ],
-                      ),
+
                       IconButton(
                         icon: const Icon(
                           Icons.delete_outline,
                           color: Colors.black38,
                         ),
-                        onPressed: () => _remove(index),
+                        onPressed: () => cart.removeItem(item),
                       ),
                     ],
                   ),
@@ -289,7 +229,7 @@ class _CartScreenState extends State<CartScreen> {
                       ),
                     ),
                     child: Text(
-                      'Checkout (${cartItems.fold<int>(0, (sum, item) => sum + item['quantity'] as int)})',
+                      'Checkout (${cart.items.fold<int>(0, (sum, item) => sum + item.id)})',
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,

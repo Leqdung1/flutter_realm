@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_realm/models/cart_models.dart';
 import 'package:flutter_realm/models/catalog_model.dart';
 import 'package:flutter_realm/screens/cart_screen.dart';
+import 'package:provider/provider.dart';
 
 class CatalogScreen extends StatefulWidget {
   const CatalogScreen({super.key});
@@ -58,9 +60,9 @@ class _CatalogScreenState extends State<CatalogScreen> {
                       minWidth: 18,
                       minHeight: 18,
                     ),
-                    child: const Text(
-                      '3',
-                      style: TextStyle(color: Colors.white, fontSize: 12),
+                    child: Text(
+                      Provider.of<CartModel>(context).items.length.toString(),
+                      style: const TextStyle(color: Colors.white, fontSize: 12),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -148,7 +150,12 @@ class _CatalogScreenState extends State<CatalogScreen> {
                       ),
                       const SizedBox(width: 8),
                       TextButton.icon(
-                        onPressed: () {},
+                        onPressed: () {
+                          Provider.of<CartModel>(
+                            context,
+                            listen: false,
+                          ).addItem(item);
+                        },
                         icon: const Icon(Icons.add, color: Color(0xFF4F5DFF)),
                         label: const Text(
                           'ADD',

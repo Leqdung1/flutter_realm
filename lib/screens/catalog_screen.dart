@@ -12,12 +12,29 @@ class CatalogScreen extends StatefulWidget {
 }
 
 class _CatalogScreenState extends State<CatalogScreen> {
+  final ScrollController _scrollController = ScrollController();
+
+  void _scrollToTop() {
+    _scrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final itemsData = CatalogModel().realm.all<Item>();
     final listExpand =
         List.generate(20, (_) => itemsData).expand((x) => x).toList();
     return Scaffold(
+      backgroundColor: const Color(0xFFF7F8FA),
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -101,6 +118,8 @@ class _CatalogScreenState extends State<CatalogScreen> {
           // Catalog List
           Expanded(
             child: ListView.separated(
+              key: PageStorageKey('catalog_list'),
+              controller: _scrollController,
               padding: const EdgeInsets.symmetric(horizontal: 12),
               itemCount: listExpand.length,
               separatorBuilder: (_, __) => const SizedBox(height: 12),
@@ -181,7 +200,15 @@ class _CatalogScreenState extends State<CatalogScreen> {
           ),
         ],
       ),
-      backgroundColor: const Color(0xFFF7F8FA),
+
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.white,
+        shape: const CircleBorder(),
+        onPressed: () {
+          _scrollToTop();
+        },
+        child: const Icon(Icons.arrow_upward),
+      ),
     );
   }
 }
